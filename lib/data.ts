@@ -152,6 +152,8 @@ export const tracks = [
   { id: "HNBCVM4KbUM", title: "Three Little Birds", artist: "Bob Marley & The Wailers", year: "1977" },
   { id: "1ti2YCFgCoI", title: "Could You Be Loved", artist: "Bob Marley & The Wailers", year: "1980" },
   { id: "yv5xonFSC4c", title: "Redemption Song", artist: "Bob Marley & The Wailers", year: "1980" },
+  { id: "IN0KkGeEURw", title: "One Love", artist: "Bob Marley & The Wailers", year: "1977" },
+  { id: "IT8XvzIfi4U", title: "No Woman, No Cry", artist: "Bob Marley & The Wailers", year: "1975" },
 ];
 
 export const proverb = {

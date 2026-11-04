@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { me, projects } from "@/lib/data";
+import { me, projects, tracks } from "@/lib/data";
 import { useUI } from "./Providers";
 
 type Item = { id: string; label: string; group: string; hint?: string; run: () => void };
@@ -57,7 +57,7 @@ export default function CommandPalette() {
         id: "music",
         group: "Actions",
         label: "Play or pause the music",
-        hint: "Six songs on rotation",
+        hint: `${tracks.length} songs on rotation`,
         run: () => {
           close();
           window.dispatchEvent(new CustomEvent("music", { detail: "toggle" }));
