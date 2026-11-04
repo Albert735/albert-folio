@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, animate, motion, useDragControls, useMotionValue } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { tracks } from "@/lib/data";
 
@@ -10,6 +10,10 @@ import { tracks } from "@/lib/data";
  * Browsers block sound until the visitor interacts with the page, so the music
  * starts on their first click or key press anywhere. YouTube requires the player
  * to stay visible (at least 200×200) while it plays, so minimising pauses it.
+ *
+ * Drag it around by its top bar (or the pill when minimised). The YouTube
+ * player itself swallows pointer events, so it can't be the handle. The
+ * position is remembered per visitor.
  *
  * Other parts of the site control it with:
  *   window.dispatchEvent(new CustomEvent("music", { detail: "toggle" | "play" | "pause" | "next" }))
@@ -34,6 +38,8 @@ declare global {
 }
 
 const STORAGE_KEY = "aq-music";
+const POS_KEY = "aq-music-pos";
+const EDGE = 8; // keep the card this far inside the screen
 
 function loadYouTubeApi(): Promise<void> {
   return new Promise((resolve) => {
@@ -72,6 +78,11 @@ export default function MusicPlayer() {
   const mount = useRef<HTMLDivElement>(null);
   const player = useRef<YTPlayer | null>(null);
   const card = useRef<HTMLDivElement>(null);
+  const bounds = useRef<HTMLDivElement>(null);
+  const controls = useDragControls();
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const dragged = useRef(false);
   const wantPlay = useRef(false);
   const [ready, setReady] = useState(false);
   const [playing, setPlaying] = useState(false);
@@ -193,10 +204,75 @@ export default function MusicPlayer() {
     return () => window.removeEventListener("music", onCmd);
   }, [play, pause, go, playing]);
 
+  // Nudge the card back on screen (after a resize, or when it grows from pill to card)
+  const keepInView = useCallback((instant = false) => {
+    const el = card.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    let dx = 0;
+    let dy = 0;
+    if (r.left < EDGE) dx = EDGE - r.left;
+    else if (r.right > window.innerWidth - EDGE) dx = window.innerWidth - EDGE - r.right;
+    if (r.top < EDGE) dy = EDGE - r.top;
+    else if (r.bottom > window.innerHeight - EDGE) dy = window.innerHeight - EDGE - r.bottom;
+    if (!dx && !dy) return;
+    const opts = instant ? { duration: 0 } : { type: "spring" as const, stiffness: 380, damping: 34 };
+    animate(x, x.get() + dx, opts);
+    animate(y, y.get() + dy, opts);
+  }, [x, y]);
+
+  const savePosition = () => {
+    try {
+      localStorage.setItem(POS_KEY, JSON.stringify({ x: x.get(), y: y.get() }));
+    } catch {}
+  };
+
+  // Restore where the visitor left it
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(POS_KEY) ?? "null");
+      if (saved && Number.isFinite(saved.x) && Number.isFinite(saved.y)) {
+        x.set(saved.x);
+        y.set(saved.y);
+      }
+    } catch {}
+    requestAnimationFrame(() => keepInView(true));
+    const onResize = () => keepInView(true);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [x, y, keepInView]);
+
+  useEffect(() => {
+    requestAnimationFrame(() => keepInView());
+  }, [open, keepInView]);
+
+  const startDrag = (e: React.PointerEvent) => {
+    dragged.current = false;
+    controls.start(e);
+  };
+
   const track = tracks[index];
 
   return (
-    <div ref={card} className="fixed bottom-4 right-4 z-40 sm:bottom-6 sm:right-6" data-lenis-prevent>
+    <>
+    {/* The area the card can be dragged within */}
+    <div ref={bounds} aria-hidden className="pointer-events-none fixed inset-2 z-[55]" />
+    <motion.div
+      ref={card}
+      drag
+      dragListener={false}
+      dragControls={controls}
+      dragConstraints={bounds}
+      dragElastic={0}
+      dragMomentum={false}
+      onDragStart={() => {
+        dragged.current = true;
+      }}
+      onDragEnd={savePosition}
+      style={{ x, y }}
+      className="fixed bottom-4 right-4 z-[55] sm:bottom-6 sm:right-6"
+      data-lenis-prevent
+    >
       {/* The YouTube player stays mounted; the card collapses around it only while paused */}
       <motion.div
         layout
@@ -206,11 +282,22 @@ export default function MusicPlayer() {
         transition={{ type: "spring", stiffness: 380, damping: 34 }}
       >
         <div className={open ? "" : "pointer-events-none absolute h-px w-px overflow-hidden opacity-0"} aria-hidden={!open}>
-          <div className="mb-3 flex items-center justify-between">
+          <div
+            onPointerDown={startDrag}
+            data-cursor="Drag"
+            title="Drag to move"
+            className="-mx-1 -mt-1 mb-2 flex cursor-grab touch-none select-none items-center justify-between rounded-lg px-1 py-1 active:cursor-grabbing"
+          >
             <span className="flex items-center gap-2 text-xs text-mist">
               <Bars on={playing} />
               On rotation
             </span>
+            <span className="flex-1" />
+            <svg width="14" height="14" viewBox="0 0 14 14" className="mr-1 text-bone/35" aria-hidden>
+              {[3, 7, 11].map((cy) =>
+                [5, 9].map((cx) => <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="1.1" fill="currentColor" />)
+              )}
+            </svg>
             <button
               onClick={minimise}
               aria-label="Minimise and pause music"
@@ -290,9 +377,14 @@ export default function MusicPlayer() {
 
         {!open && (
           <button
-            onClick={play}
+            onPointerDown={startDrag}
+            onClick={() => {
+              if (dragged.current) return; // that was a drag, not a tap
+              play();
+            }}
             aria-label={`Play ${track.title} by ${track.artist}`}
-            className="flex items-center gap-2.5 rounded-xl py-1.5 pl-1.5 pr-3.5 text-left"
+            title="Tap to play, drag to move"
+            className="flex touch-none select-none items-center gap-2.5 rounded-xl py-1.5 pl-1.5 pr-3.5 text-left"
           >
             <span className="grid h-8 w-8 place-items-center rounded-full bg-gold text-night">
               <svg width="12" height="12" viewBox="0 0 14 14" aria-hidden>
@@ -306,6 +398,7 @@ export default function MusicPlayer() {
           </button>
         )}
       </motion.div>
-    </div>
+    </motion.div>
+    </>
   );
 }
