@@ -4,7 +4,6 @@ import KenteBand from "@/components/KenteBand";
 import Work from "@/components/Work";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
-import Writing from "@/components/Writing";
 
 export default function Home() {
   return (
@@ -21,7 +20,6 @@ export default function Home() {
         <KenteBand words={["Accra", "Legon", "React Native", "Next.js", "Mobile money", "Figma", "Expo", "Mapbox"]} />
         <Work />
         <About />
-        <Writing />
         <Contact />
       </main>
     </>

@@ -39,7 +39,7 @@ export default async function Article({ params }: { params: Promise<{ slug: stri
       <main className="px-4 pb-24 pt-32 sm:px-8 sm:pt-40">
         <article className="mx-auto max-w-[68ch]">
           <Link href="/blog" className="text-sm text-mist transition-colors hover:text-gold">
-            ← All writing
+            ← All topics
           </Link>
 
           <header className="mt-10">
@@ -52,7 +52,7 @@ export default async function Article({ params }: { params: Promise<{ slug: stri
             </h1>
             <p className="mt-6 text-xl leading-relaxed text-bone/75">{post.excerpt}</p>
             <p className="mt-6 text-sm text-bone/50">
-              By Albert Quaye, {formatDate(post.date)}. {readingMinutes(slug)} min read.
+              {formatDate(post.date)}. {readingMinutes(slug)} min read.
             </p>
           </header>
 
@@ -83,7 +83,7 @@ export default async function Article({ params }: { params: Promise<{ slug: stri
           )}
         </article>
 
-        <nav aria-label="More writing" className="mx-auto mt-20 grid max-w-[1100px] gap-4 sm:grid-cols-2">
+        <nav aria-label="More topics" className="mx-auto mt-20 grid max-w-[1100px] gap-4 sm:grid-cols-2">
           {prev ? (
             <Link href={`/blog/${prev.slug}`} className="group rounded-2xl border border-bone/10 p-6 transition-colors hover:border-gold/50">
               <span className="text-sm text-mist">Earlier, {prev.year}</span>

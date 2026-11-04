@@ -1,6 +1,7 @@
 "use client";
 
 import { projects, type Project } from "@/lib/data";
+import Link from "next/link";
 import Device from "./Device";
 import Magnetic from "./Magnetic";
 
@@ -32,7 +33,9 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
         </div>
 
         <h3 className="font-display text-[clamp(2.4rem,6vw,4.6rem)] font-bold leading-[0.95] tracking-[-0.03em]">
-          {project.name}
+          <Link href={`/work/${project.slug}`} className="transition-colors hover:text-gold">
+            {project.name}
+          </Link>
         </h3>
         <p className="mt-5 max-w-lg font-display text-xl font-medium leading-snug text-gold sm:text-2xl">
           {project.summary}
@@ -55,6 +58,15 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
         </ul>
 
         <div className="mt-9 flex flex-wrap gap-3">
+          <Magnetic>
+            <Link
+              href={`/work/${project.slug}`}
+              data-cursor="Read"
+              className="inline-block rounded-full bg-gold px-6 py-3.5 font-display text-sm font-semibold text-night"
+            >
+              Read the case study
+            </Link>
+          </Magnetic>
           {project.live && (
             <Magnetic>
               <a
@@ -62,7 +74,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
                 target="_blank"
                 rel="noreferrer"
                 data-cursor="Visit"
-                className="inline-block rounded-full bg-gold px-6 py-3.5 font-display text-sm font-semibold text-night"
+                className="inline-block rounded-full border border-bone/20 px-6 py-3.5 font-display text-sm font-medium text-bone transition-colors hover:border-gold hover:text-gold"
               >
                 Visit {project.name}
               </a>
@@ -80,11 +92,6 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
                 View the code
               </a>
             </Magnetic>
-          )}
-          {!project.live && !project.repo && (
-            <span className="rounded-full border border-dashed border-bone/20 px-6 py-3.5 text-sm text-bone/60">
-              Repo opens at launch
-            </span>
           )}
         </div>
       </div>

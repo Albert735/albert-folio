@@ -16,7 +16,7 @@ By 1963, King was the best-known face of the civil rights movement. That spring,
 
 On 28 August 1963, he stood before roughly a quarter of a million people at the March on Washington and gave the speech the world now knows by its refrain.
 
-The following year, the Civil Rights Act of 1964 outlawed segregation in public places and discrimination in employment. In October 1964, at 35, King became the youngest person at the time to receive the Nobel Peace Prize. That same month, speaking at Oberlin College, he said the line I chose for the top of this site: "The time is always right to do what is right." In 1965, after the marches from Selma, came the Voting Rights Act.
+The following year, the Civil Rights Act of 1964 outlawed segregation in public places and discrimination in employment. In October 1964, at 35, King became the youngest person at the time to receive the Nobel Peace Prize. That same month, speaking at Oberlin College, he said the line quoted at the top of this site: "The time is always right to do what is right." In 1965, after the marches from Selma, came the Voting Rights Act.
 
 ## At 39: Memphis
 
@@ -24,7 +24,7 @@ In his last years, King widened his focus to poverty and to the Vietnam War. Bot
 
 It took until 1986 for the United States to first observe a federal holiday in his name.
 
-## What I take from it
+## Why it still matters
 
 King did not wait to be older, more established or more certain before acting. He was 26 when people asked him to lead and 39 when he died, and the work happened in between. Most of us are somewhere inside that age range right now.
 

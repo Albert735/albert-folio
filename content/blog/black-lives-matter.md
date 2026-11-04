@@ -24,8 +24,8 @@ The Foundation faced serious questions about its finances after raising around $
 
 Supporters respond that a movement should not be judged only by one organisation's accounting, and that the core issue, how Black people are policed and treated, remains whether or not any one group handles money well.
 
-## Why it reached us
+## Why it reached Ghana
 
-Black Lives Matter is an American story, but it didn't stay in America. It was heard in London, Lagos, Rio and here in Accra, because the question underneath it is old and global: whose life is treated as valuable, by whom, and with what consequences.
+Black Lives Matter is an American story, but it didn't stay in America. It was heard in London, Lagos, Rio and Accra, because the question underneath it is old and global: whose life is treated as valuable, by whom, and with what consequences.
 
-Ghana's story runs from the forts on our coast to the diaspora that came from them, and the people in that video, on those streets, are part of it. Whatever you make of the organisations, the question deserves a serious answer.
+Ghana's story runs from the forts on its coast to the diaspora that came from them, and the people in that video, on those streets, are part of it. Whatever you make of the organisations, the question deserves a serious answer.

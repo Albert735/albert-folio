@@ -51,7 +51,7 @@ export default function Terminal() {
           g("Commands"),
           o("  whoami          who's behind this"),
           o("  projects        list what I've built"),
-          o("  open <name>     jump to a project, e.g. open raute"),
+          o("  open <name>     read a project's case study, e.g. open raute"),
           o("  stack           tools I use"),
           o("  experience      where I've worked"),
           o("  contact         how to reach me"),
@@ -78,10 +78,10 @@ export default function Terminal() {
         if (!arg) print({ kind: "err", text: "open what? try: open raute" });
         else if (!p) print({ kind: "err", text: `No project called '${arg}'. Run 'projects' to see them all.` });
         else {
-          print(g(`Opening ${p.name}…`));
+          print(g(`Opening the ${p.name} case study…`));
           setTimeout(() => {
             setTerminalOpen(false);
-            scrollTo(`#project-${p.slug}`);
+            router.push(`/work/${p.slug}`);
           }, 450);
         }
         break;
@@ -128,7 +128,7 @@ export default function Terminal() {
         break;
       case "blog":
       case "writing":
-        print(g("Writing"), ...posts.map((p) => o(`  ${p.year}  ${p.title}`)), o("  read <name> to open one"));
+        print(g("Blog: topics in Black history I care about"), ...posts.map((p) => o(`  ${p.year}  ${p.title}`)), o("  read <name> to open one"));
         break;
       case "read": {
         const p = posts.find((p) => arg && (p.slug.includes(arg) || p.title.toLowerCase().includes(arg)));

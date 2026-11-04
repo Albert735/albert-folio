@@ -6,7 +6,7 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 
 const description =
-  "Albert Quaye builds web and mobile products in Accra: Raute, Crestline Kits, ShiftMed and more. Plus writing on Black history and freedom.";
+  "Albert Quaye builds web and mobile products in Accra: Raute, Crestline Kits, ShiftMed and more.";
 
 export const metadata: Metadata = {
   title: {

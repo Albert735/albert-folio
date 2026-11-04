@@ -28,4 +28,4 @@ His record is debated from every direction. Supporters point to the economic rec
 
 Presidents leave. Governments change. The point of that sentence in Accra was that the things that last should not depend on any one person: not on a president, not on a party, not on a strongman.
 
-As someone who builds software, I find that idea familiar. Good systems are the ones that keep working when the person who built them isn't in the room. The same is true of countries.
+The idea reaches well beyond politics. Good systems are the ones that keep working when the person who built them isn't in the room. Countries are no different.

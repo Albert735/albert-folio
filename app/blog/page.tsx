@@ -8,7 +8,7 @@ import { readingMinutes } from "@/lib/blog-content";
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Writing on Black history and freedom: emancipation, Kwame Nkrumah, Martin Luther King Jr., Nelson Mandela, Barack Obama and Black Lives Matter.",
+    "Topics in Black history that I care about: emancipation, Kwame Nkrumah, Martin Luther King Jr., Nelson Mandela, Barack Obama and Black Lives Matter.",
 };
 
 export default function BlogIndex() {
@@ -20,10 +20,10 @@ export default function BlogIndex() {
       <Nav />
       <main className="mx-auto max-w-[1100px] px-4 pb-24 pt-32 sm:px-8 sm:pt-40">
         <h1 className="font-display text-[clamp(2.8rem,9vw,7rem)] font-extrabold leading-[0.9] tracking-[-0.045em]">
-          Writing
+          Blog
         </h1>
         <p className="mt-6 max-w-xl text-xl leading-relaxed text-bone/70">
-          On Black history, freedom, and the people who fought for both. Six stories, from 1834 to 2013.
+          Topics in Black history that I care about, from 1834 to 2013.
         </p>
 
         <div className="kente mt-14" aria-hidden />

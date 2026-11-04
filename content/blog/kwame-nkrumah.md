@@ -24,6 +24,6 @@ On 24 February 1966, while he was abroad on a trip to Asia, the military and pol
 
 ## Why he still matters
 
-Ghanaians still argue about Nkrumah, and we should. He was a visionary who gave a continent its confidence, and a leader whose government silenced its critics. Both are true.
+Ghanaians still argue about Nkrumah, and that's healthy. He was a visionary who gave a continent its confidence, and a leader whose government silenced its critics. Both are true.
 
-What has outlived the arguments is the idea at the centre of his work: that Africans can and should decide their own future, together. Every time someone builds something on this continent, for this continent, that idea is at work. It's part of why I build what I build.
+What has outlived the arguments is the idea at the centre of his work: that Africans can and should decide their own future, together. Every time someone builds something on this continent, for this continent, that idea is at work.

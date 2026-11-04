@@ -22,8 +22,8 @@ In the United States, Abraham Lincoln's Emancipation Proclamation took effect on
 
 Different dates, same pattern: freedom announced by law, delayed in practice, and fought for on the ground long before and long after.
 
-## What it asks of us
+## What it still asks
 
-In 2019, Ghana's Year of Return marked 400 years since enslaved Africans were recorded arriving in the English colony of Virginia, and thousands of people from the diaspora visited, some for the first time. Emancipation Day carries the same invitation every year: to look at the forts on our coast not just as tourist sites, but as evidence.
+In 2019, Ghana's Year of Return marked 400 years since enslaved Africans were recorded arriving in the English colony of Virginia, and thousands of people from the diaspora visited, some for the first time. Emancipation Day carries the same invitation every year: to look at the forts on Ghana's coast not just as tourist sites, but as evidence.
 
 Emancipation is not only something that happened in 1834 or 1865. It is the ongoing work of making sure that freedom on paper becomes freedom in fact: in who gets educated, who gets hired, who gets heard. The castles are still standing. So is the question they ask.
