@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import AdinkraMark from "./AdinkraMark";
 import { useUI } from "./Providers";
+import { me } from "@/lib/data";
 
 function AccraClock() {
   const [time, setTime] = useState<string | null>(null);
@@ -81,6 +82,20 @@ export default function Nav() {
               {l.label}
             </a>
           ))}
+          {/* Résumé opens in a new tab; shown on every screen size */}
+          <a
+            href={me.resume}
+            target="_blank"
+            rel="noreferrer"
+            data-cursor="Open"
+            className="flex items-center gap-1.5 rounded-full px-4 py-2 text-bone transition-colors hover:bg-bone/10 hover:text-gold"
+          >
+            Résumé
+            <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden className="opacity-60">
+              <path d="M3 1h6v6M9 1L1 9" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span className="sr-only">(opens in a new tab)</span>
+          </a>
           <button
             onClick={() => setPaletteOpen(true)}
             className="flex items-center gap-2 rounded-full bg-gold px-4 py-2 font-medium text-night transition-transform active:scale-95"
