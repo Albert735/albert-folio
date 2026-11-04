@@ -148,6 +148,10 @@ export const stack = {
 export const tracks = [
   { id: "nbr3ck1FjlU", title: "Vuli Ndlela", artist: "Brenda Fassie", year: "1997" },
   { id: "FoSUuakRCok", title: "Woyaya", artist: "Osibisa", year: "1971" },
+  { id: "vnoVahV0Gpc", title: "Umqombothi", artist: "Yvonne Chaka Chaka", year: "1988" },
+  { id: "HNBCVM4KbUM", title: "Three Little Birds", artist: "Bob Marley & The Wailers", year: "1977" },
+  { id: "1ti2YCFgCoI", title: "Could You Be Loved", artist: "Bob Marley & The Wailers", year: "1980" },
+  { id: "yv5xonFSC4c", title: "Redemption Song", artist: "Bob Marley & The Wailers", year: "1980" },
 ];
 
 export const proverb = {

@@ -391,9 +391,9 @@ export default function MusicPlayer() {
                 <path d="M3.5 2l8 5-8 5V2z" fill="currentColor" />
               </svg>
             </span>
-            <span className="text-xs leading-tight">
-              <span className="block font-display font-semibold text-bone">{track.title}</span>
-              <span className="block text-bone/60">{track.artist}</span>
+            <span className="min-w-0 max-w-[160px] text-xs leading-tight">
+              <span className="block truncate font-display font-semibold text-bone">{track.title}</span>
+              <span className="block truncate text-bone/60">{track.artist}</span>
             </span>
           </button>
         )}

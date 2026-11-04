@@ -57,7 +57,7 @@ export default function CommandPalette() {
         id: "music",
         group: "Actions",
         label: "Play or pause the music",
-        hint: "Vuli Ndlela, Woyaya",
+        hint: "Six songs on rotation",
         run: () => {
           close();
           window.dispatchEvent(new CustomEvent("music", { detail: "toggle" }));
