@@ -59,7 +59,7 @@ export default function Hero() {
           />
         </motion.h1>
 
-        <div className="mt-8 flex flex-col gap-8 sm:mt-10 md:flex-row md:items-end md:justify-between">
+        <div className="mt-8 flex flex-col items-start gap-8 sm:mt-10">
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}

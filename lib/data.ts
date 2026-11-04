@@ -144,6 +144,12 @@ export const stack = {
   "Keep it moving": ["Zustand", "React Query", "React Hook Form", "Git", "Vercel", "Netlify"],
 };
 
+/** Songs for the now-playing card: official YouTube uploads, played in this order */
+export const tracks = [
+  { id: "nbr3ck1FjlU", title: "Vuli Ndlela", artist: "Brenda Fassie", year: "1997" },
+  { id: "FoSUuakRCok", title: "Woyaya", artist: "Osibisa", year: "1971" },
+];
+
 export const proverb = {
   twi: "Se wo were fi na wosankofa a yenkyi.",
   en: "It is not wrong to go back for what you forgot.",

@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { experience, me, projects, proverb, stack } from "@/lib/data";
+import { experience, me, projects, proverb, stack, tracks } from "@/lib/data";
 import { useUI } from "./Providers";
 
 type Line = { kind: "in" | "out" | "gold" | "err"; text: string };
@@ -54,6 +54,7 @@ export default function Terminal() {
           o("  contact         how to reach me"),
           o("  resume          open my résumé"),
           o("  sankofa         a little wisdom"),
+          o("  music           what's on rotation (play, pause, next)"),
           o("  clear           clear the screen"),
           o("  exit            close the terminal"),
           o("  (there may be one more. try 'sudo')")
@@ -120,6 +121,16 @@ export default function Terminal() {
       case "quit":
         setTerminalOpen(false);
         break;
+      case "music":
+      case "songs":
+        print(g("On rotation"), ...tracks.map((t, i) => o(`  ${i + 1}. ${t.title} by ${t.artist} (${t.year})`)), o("  play · pause · next"));
+        break;
+      case "play":
+      case "pause":
+      case "next":
+        window.dispatchEvent(new CustomEvent("music", { detail: name.toLowerCase() }));
+        print(g(name.toLowerCase() === "pause" ? "Paused." : name.toLowerCase() === "next" ? "Skipping to the next song…" : "Playing ♪"));
+        break;
       case "akwaaba":
         print(g("Akwaaba! You're welcome here. 🇬🇭"));
         break;
@@ -148,7 +159,7 @@ export default function Terminal() {
       setValue(i >= 0 ? history[i] : "");
     } else if (e.key === "Tab") {
       e.preventDefault();
-      const cmds = ["help", "whoami", "projects", "open ", "stack", "experience", "contact", "resume", "sankofa", "clear", "exit"];
+      const cmds = ["help", "whoami", "projects", "open ", "stack", "experience", "contact", "resume", "sankofa", "music", "play", "pause", "next", "clear", "exit"];
       const hit = cmds.find((c) => c.startsWith(value));
       if (hit) setValue(hit);
     }

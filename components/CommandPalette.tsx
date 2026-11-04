@@ -54,6 +54,16 @@ export default function CommandPalette() {
       },
       { id: "resume", group: "Actions", label: "Open my résumé", run: () => open(me.resume) },
       {
+        id: "music",
+        group: "Actions",
+        label: "Play or pause the music",
+        hint: "Vuli Ndlela, Woyaya",
+        run: () => {
+          close();
+          window.dispatchEvent(new CustomEvent("music", { detail: "toggle" }));
+        },
+      },
+      {
         id: "terminal",
         group: "Actions",
         label: "Open the terminal",

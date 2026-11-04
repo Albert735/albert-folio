@@ -5,6 +5,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState } f
 import Cursor from "./Cursor";
 import CommandPalette from "./CommandPalette";
 import Terminal from "./Terminal";
+import MusicPlayer from "./MusicPlayer";
 
 type UI = {
   paletteOpen: boolean;
@@ -82,6 +83,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <Cursor />
       <CommandPalette />
       <Terminal />
+      <MusicPlayer />
     </UIContext.Provider>
   );
 }
