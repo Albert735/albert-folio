@@ -36,7 +36,7 @@ export default function Nav() {
     setTouch(window.matchMedia("(pointer: coarse)").matches);
   }, []);
   useEffect(() => {
-    const on = () => setScrolled(window.scrollY > 40);
+    const on = () => setScrolled(window.scrollY > 8);
     on();
     window.addEventListener("scroll", on, { passive: true });
     return () => window.removeEventListener("scroll", on);
@@ -53,7 +53,8 @@ export default function Nav() {
       initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 1.6, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${scrolled ? "border-b border-bone/10 bg-night/75 backdrop-blur-xl" : ""}`}
+      style={{ paddingTop: "env(safe-area-inset-top)" }}
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-200 ${scrolled ? "border-bone/10 bg-night/90 backdrop-blur-xl" : "border-transparent"}`}
     >
       <nav className="mx-auto flex max-w-[1400px] items-center justify-between px-4 py-4 sm:px-8">
         <a

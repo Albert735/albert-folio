@@ -1,7 +1,7 @@
 "use client";
 
-import { AnimatePresence, animate, motion, useDragControls, useMotionValue } from "framer-motion";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, animate, motion, useMotionValue } from "framer-motion";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { tracks } from "@/lib/data";
 
 /**
@@ -14,6 +14,11 @@ import { tracks } from "@/lib/data";
  * Drag it around by its top bar (or the pill when minimised). The YouTube
  * player itself swallows pointer events, so it can't be the handle. The
  * position is remembered per visitor.
+ *
+ * The card is pinned from the top-left and dragged with plain pointer events
+ * (no drag library): on phones the address bar resizes the screen constantly
+ * while scrolling, and anything that re-clamps or re-anchors on every resize
+ * makes the card jump. Here a resize only moves it if it would be lost.
  *
  * Other parts of the site control it with:
  *   window.dispatchEvent(new CustomEvent("music", { detail: "toggle" | "play" | "pause" | "next" }))
@@ -38,7 +43,8 @@ declare global {
 }
 
 const STORAGE_KEY = "aq-music";
-const POS_KEY = "aq-music-pos";
+// v2: position measured from the top-left corner (v1 was bottom-right)
+const POS_KEY = "aq-music-pos-v2";
 const EDGE = 8; // keep the card this far inside the screen
 
 function loadYouTubeApi(): Promise<void> {
@@ -78,11 +84,11 @@ export default function MusicPlayer() {
   const mount = useRef<HTMLDivElement>(null);
   const player = useRef<YTPlayer | null>(null);
   const card = useRef<HTMLDivElement>(null);
-  const bounds = useRef<HTMLDivElement>(null);
-  const controls = useDragControls();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const dragged = useRef(false);
+  const size = useRef<{ w: number; h: number } | null>(null);
+  const [placed, setPlaced] = useState(false);
   const wantPlay = useRef(false);
   const [ready, setReady] = useState(false);
   const [playing, setPlaying] = useState(false);
@@ -204,22 +210,32 @@ export default function MusicPlayer() {
     return () => window.removeEventListener("music", onCmd);
   }, [play, pause, go, playing]);
 
-  // Nudge the card back on screen (after a resize, or when it grows from pill to card)
-  const keepInView = useCallback((instant = false) => {
+  // Where the card may sit: fully on screen, EDGE px in from every side
+  const clamp = useCallback((nx: number, ny: number) => {
     const el = card.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    let dx = 0;
-    let dy = 0;
-    if (r.left < EDGE) dx = EDGE - r.left;
-    else if (r.right > window.innerWidth - EDGE) dx = window.innerWidth - EDGE - r.right;
-    if (r.top < EDGE) dy = EDGE - r.top;
-    else if (r.bottom > window.innerHeight - EDGE) dy = window.innerHeight - EDGE - r.bottom;
-    if (!dx && !dy) return;
-    const opts = instant ? { duration: 0 } : { type: "spring" as const, stiffness: 380, damping: 34 };
-    animate(x, x.get() + dx, opts);
-    animate(y, y.get() + dy, opts);
-  }, [x, y]);
+    const w = el?.offsetWidth ?? 0;
+    const h = el?.offsetHeight ?? 0;
+    return {
+      x: Math.min(Math.max(nx, EDGE), Math.max(EDGE, window.innerWidth - w - EDGE)),
+      y: Math.min(Math.max(ny, EDGE), Math.max(EDGE, window.innerHeight - h - EDGE)),
+    };
+  }, []);
+
+  const keepInView = useCallback(
+    (smooth = false) => {
+      const c = clamp(x.get(), y.get());
+      if (c.x === x.get() && c.y === y.get()) return;
+      if (smooth) {
+        const spring = { type: "spring" as const, stiffness: 380, damping: 34 };
+        animate(x, c.x, spring);
+        animate(y, c.y, spring);
+      } else {
+        x.set(c.x);
+        y.set(c.y);
+      }
+    },
+    [clamp, x, y]
+  );
 
   const savePosition = () => {
     try {
@@ -227,63 +243,119 @@ export default function MusicPlayer() {
     } catch {}
   };
 
-  // Restore where the visitor left it
+  // Place the card: where the visitor left it, or the bottom-right corner
   useEffect(() => {
-    try {
-      const saved = JSON.parse(localStorage.getItem(POS_KEY) ?? "null");
-      if (saved && Number.isFinite(saved.x) && Number.isFinite(saved.y)) {
-        x.set(saved.x);
-        y.set(saved.y);
+    let raf = 0;
+    const place = () => {
+      const el = card.current;
+      if (!el) return;
+      let restored = false;
+      try {
+        const saved = JSON.parse(localStorage.getItem(POS_KEY) ?? "null");
+        if (saved && Number.isFinite(saved.x) && Number.isFinite(saved.y)) {
+          x.set(saved.x);
+          y.set(saved.y);
+          restored = true;
+        }
+      } catch {}
+      if (!restored) {
+        const margin = window.innerWidth < 640 ? 16 : 24;
+        x.set(window.innerWidth - el.offsetWidth - margin);
+        y.set(window.innerHeight - el.offsetHeight - margin);
       }
-    } catch {}
-    requestAnimationFrame(() => keepInView(true));
-    const onResize = () => keepInView(true);
+      size.current = { w: el.offsetWidth, h: el.offsetHeight };
+      keepInView();
+      setPlaced(true);
+    };
+    // two frames: let the phone layout (pill) render before measuring
+    raf = requestAnimationFrame(() => (raf = requestAnimationFrame(place)));
+
+    // After a resize settles: a width change (rotation, window resize) re-fits the card.
+    // A height-only change is usually the phone's address bar sliding in or out
+    // while scrolling, so the card stays put unless it has gone off the bottom.
+    let lastWidth = window.innerWidth;
+    let t: ReturnType<typeof setTimeout>;
+    const onResize = () => {
+      clearTimeout(t);
+      t = setTimeout(() => {
+        const widthChanged = window.innerWidth !== lastWidth;
+        lastWidth = window.innerWidth;
+        if (widthChanged || y.get() > window.innerHeight - 48) keepInView(true);
+      }, 250);
+    };
     window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(t);
+      window.removeEventListener("resize", onResize);
+    };
   }, [x, y, keepInView]);
 
-  useEffect(() => {
-    requestAnimationFrame(() => keepInView());
-  }, [open, keepInView]);
+  // Growing from pill to card (or back): keep the bottom-right corner where it was
+  useLayoutEffect(() => {
+    const el = card.current;
+    if (!el || !size.current) return;
+    const w = el.offsetWidth;
+    const h = el.offsetHeight;
+    x.set(x.get() + (size.current.w - w));
+    y.set(y.get() + (size.current.h - h));
+    size.current = { w, h };
+    keepInView();
+  }, [open, x, y, keepInView]);
 
-  const startDrag = (e: React.PointerEvent) => {
-    dragged.current = false;
-    controls.start(e);
+  // Dragging, with plain pointer events
+  const drag = useRef<{ id: number; px: number; py: number; x: number; y: number } | null>(null);
+  const handleProps = {
+    onPointerDown: (e: React.PointerEvent<HTMLElement>) => {
+      if (e.button !== 0) return;
+      // let other buttons inside the handle (minimise) click normally
+      const btn = (e.target as HTMLElement).closest("button");
+      if (btn && btn !== e.currentTarget) return;
+      dragged.current = false;
+      drag.current = { id: e.pointerId, px: e.clientX, py: e.clientY, x: x.get(), y: y.get() };
+      e.currentTarget.setPointerCapture(e.pointerId);
+    },
+    onPointerMove: (e: React.PointerEvent<HTMLElement>) => {
+      const d = drag.current;
+      if (!d || d.id !== e.pointerId) return;
+      const dx = e.clientX - d.px;
+      const dy = e.clientY - d.py;
+      if (!dragged.current && Math.hypot(dx, dy) < 4) return; // a tap, not a drag
+      dragged.current = true;
+      const c = clamp(d.x + dx, d.y + dy);
+      x.set(c.x);
+      y.set(c.y);
+    },
+    onPointerUp: (e: React.PointerEvent<HTMLElement>) => {
+      const d = drag.current;
+      if (!d || d.id !== e.pointerId) return;
+      drag.current = null;
+      if (dragged.current) savePosition();
+    },
+    onPointerCancel: () => {
+      drag.current = null;
+    },
   };
 
   const track = tracks[index];
 
   return (
     <>
-    {/* The area the card can be dragged within */}
-    <div ref={bounds} aria-hidden className="pointer-events-none fixed inset-2 z-[55]" />
     <motion.div
       ref={card}
-      drag
-      dragListener={false}
-      dragControls={controls}
-      dragConstraints={bounds}
-      dragElastic={0}
-      dragMomentum={false}
-      onDragStart={() => {
-        dragged.current = true;
-      }}
-      onDragEnd={savePosition}
-      style={{ x, y }}
-      className="fixed bottom-4 right-4 z-[55] sm:bottom-6 sm:right-6"
+      style={{ x, y, opacity: placed ? 1 : 0 }}
+      className="fixed left-0 top-0 z-[55] transition-opacity duration-300"
       data-lenis-prevent
     >
       {/* The YouTube player stays mounted; the card collapses around it only while paused */}
-      <motion.div
-        layout
-        className={`overflow-hidden rounded-2xl border border-bone/15 bg-night-2/90 shadow-[0_20px_60px_-20px_rgba(0,0,0,.9)] backdrop-blur-xl ${
+      <div
+        className={`overflow-hidden rounded-2xl border border-bone/15 bg-night-2 shadow-[0_20px_60px_-20px_rgba(0,0,0,.9)] ${
           open ? "w-[224px] p-3" : "w-auto p-1.5"
         }`}
-        transition={{ type: "spring", stiffness: 380, damping: 34 }}
       >
         <div className={open ? "" : "pointer-events-none absolute h-px w-px overflow-hidden opacity-0"} aria-hidden={!open}>
           <div
-            onPointerDown={startDrag}
+            {...handleProps}
             data-cursor="Drag"
             title="Drag to move"
             className="-mx-1 -mt-1 mb-2 flex cursor-grab touch-none select-none items-center justify-between rounded-lg px-1 py-1 active:cursor-grabbing"
@@ -377,7 +449,7 @@ export default function MusicPlayer() {
 
         {!open && (
           <button
-            onPointerDown={startDrag}
+            {...handleProps}
             onClick={() => {
               if (dragged.current) return; // that was a drag, not a tap
               play();
@@ -397,7 +469,7 @@ export default function MusicPlayer() {
             </span>
           </button>
         )}
-      </motion.div>
+      </div>
     </motion.div>
     </>
   );
