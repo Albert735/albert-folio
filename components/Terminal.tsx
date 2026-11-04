@@ -1,8 +1,10 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { experience, me, projects, proverb, stack, tracks } from "@/lib/data";
+import { posts } from "@/lib/blog";
 import { useUI } from "./Providers";
 
 type Line = { kind: "in" | "out" | "gold" | "err"; text: string };
@@ -14,6 +16,7 @@ const BANNER: Line[] = [
 
 export default function Terminal() {
   const { terminalOpen, setTerminalOpen, scrollTo } = useUI();
+  const router = useRouter();
   const [lines, setLines] = useState<Line[]>(BANNER);
   const [value, setValue] = useState("");
   const [history, setHistory] = useState<string[]>([]);
@@ -55,13 +58,15 @@ export default function Terminal() {
           o("  resume          open my résumé"),
           o("  sankofa         a little wisdom"),
           o("  music           what's on rotation (play, pause, next)"),
+          o("  blog            list the articles"),
+          o("  read <name>     open an article, e.g. read nkrumah"),
           o("  clear           clear the screen"),
           o("  exit            close the terminal"),
           o("  (there may be one more. try 'sudo')")
         );
         break;
       case "whoami":
-        print(g(`${me.name} (${me.handle})`), o(`${me.role} · ${me.location}`), o(me.tagline));
+        print(g(`${me.name} (${me.handle})`), o(`${me.role} · ${me.location}`), o(`"${me.tagline}" (${me.taglineCredit})`));
         break;
       case "ls":
       case "projects":
@@ -121,6 +126,23 @@ export default function Terminal() {
       case "quit":
         setTerminalOpen(false);
         break;
+      case "blog":
+      case "writing":
+        print(g("Writing"), ...posts.map((p) => o(`  ${p.year}  ${p.title}`)), o("  read <name> to open one"));
+        break;
+      case "read": {
+        const p = posts.find((p) => arg && (p.slug.includes(arg) || p.title.toLowerCase().includes(arg)));
+        if (!arg) print({ kind: "err", text: "read what? try: read mandela" });
+        else if (!p) print({ kind: "err", text: `No article matches '${arg}'. Run 'blog' to see them all.` });
+        else {
+          print(g(`Opening "${p.title}"…`));
+          setTimeout(() => {
+            setTerminalOpen(false);
+            router.push(`/blog/${p.slug}`);
+          }, 450);
+        }
+        break;
+      }
       case "music":
       case "songs":
         print(g("On rotation"), ...tracks.map((t, i) => o(`  ${i + 1}. ${t.title} by ${t.artist} (${t.year})`)), o("  play · pause · next"));
@@ -159,7 +181,7 @@ export default function Terminal() {
       setValue(i >= 0 ? history[i] : "");
     } else if (e.key === "Tab") {
       e.preventDefault();
-      const cmds = ["help", "whoami", "projects", "open ", "stack", "experience", "contact", "resume", "sankofa", "music", "play", "pause", "next", "clear", "exit"];
+      const cmds = ["help", "whoami", "projects", "open ", "stack", "experience", "contact", "resume", "sankofa", "blog", "read ", "music", "play", "pause", "next", "clear", "exit"];
       const hit = cmds.find((c) => c.startsWith(value));
       if (hit) setValue(hit);
     }

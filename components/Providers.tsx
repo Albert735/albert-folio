@@ -1,6 +1,7 @@
 "use client";
 
 import Lenis from "lenis";
+import { usePathname, useRouter } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import Cursor from "./Cursor";
 import CommandPalette from "./CommandPalette";
@@ -70,12 +71,35 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // On a new page: start at the top, or at the #section in the address
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => {
+      const hash = window.location.hash;
+      const el = hash ? (document.querySelector(hash) as HTMLElement | null) : null;
+      if (el) {
+        if (lenis.current) lenis.current.scrollTo(el, { offset: -20, immediate: true });
+        else el.scrollIntoView();
+      } else {
+        lenis.current?.scrollTo(0, { immediate: true });
+        window.scrollTo(0, 0);
+      }
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [pathname]);
+
   const scrollTo = useCallback((target: string) => {
     const el = document.querySelector(target) as HTMLElement | null;
-    if (!el) return;
+    // the section lives on the home page: go there
+    if (!el) {
+      router.push(`/${target}`);
+      return;
+    }
     if (lenis.current) lenis.current.scrollTo(el, { offset: -20, duration: 1.4 });
     else el.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  }, [router]);
 
   return (
     <UIContext.Provider value={{ paletteOpen, setPaletteOpen, terminalOpen, setTerminalOpen, scrollTo }}>

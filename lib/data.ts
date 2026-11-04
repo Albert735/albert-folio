@@ -5,7 +5,9 @@ export const me = {
   fullName: "Quaye Andrews Albert Awuley",
   handle: "Jaytee",
   role: "Frontend & mobile engineer",
-  tagline: "From Legon to your lock screen.",
+  // Martin Luther King Jr., "The Future of Integration", Oberlin College, 22 October 1964
+  tagline: "The time is always right to do what is right.",
+  taglineCredit: "Martin Luther King Jr.",
   intro:
     "I design and build web and mobile products for people in Accra and everywhere else: campus maps, jersey stores, medical staffing, music discovery. Interfaces with rhythm, engineered to ship.",
   location: "Accra, Ghana",
@@ -128,7 +130,7 @@ export const experience = [
   {
     org: "University of Ghana, Legon",
     role: "BSc Information Technology",
-    period: "Level 400",
+    period: "Graduated",
     place: "Legon",
     note:
       "Final-year project: Raute, a campus navigation app shaped by a 208-person student survey.",

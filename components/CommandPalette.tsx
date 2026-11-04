@@ -1,8 +1,10 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { me, projects, tracks } from "@/lib/data";
+import { posts } from "@/lib/blog";
 import { useUI } from "./Providers";
 
 type Item = { id: string; label: string; group: string; hint?: string; run: () => void };
@@ -14,7 +16,12 @@ export default function CommandPalette() {
   const input = useRef<HTMLInputElement>(null);
   const [toast, setToast] = useState<string | null>(null);
 
+  const router = useRouter();
   const close = () => setPaletteOpen(false);
+  const visit = (href: string) => {
+    close();
+    router.push(href);
+  };
   const go = (target: string) => {
     close();
     setTimeout(() => scrollTo(target), 80);
@@ -28,6 +35,7 @@ export default function CommandPalette() {
     () => [
       { id: "work", group: "Go to", label: "Work", run: () => go("#work") },
       { id: "about", group: "Go to", label: "About and experience", run: () => go("#about") },
+      { id: "blog", group: "Go to", label: "Blog", hint: "Writing on Black history and freedom", run: () => visit("/blog") },
       { id: "contact", group: "Go to", label: "Contact", run: () => go("#contact") },
       { id: "top", group: "Go to", label: "Back to the top", run: () => go("#top") },
       ...projects.map((p) => ({
@@ -36,6 +44,13 @@ export default function CommandPalette() {
         label: p.name,
         hint: p.summary,
         run: () => go(`#project-${p.slug}`),
+      })),
+      ...posts.map((p) => ({
+        id: `post-${p.slug}`,
+        group: "Writing",
+        label: p.title,
+        hint: p.year,
+        run: () => visit(`/blog/${p.slug}`),
       })),
       {
         id: "copy",

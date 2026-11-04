@@ -19,7 +19,7 @@ export default function About() {
               and React Native, and stay with a product until it ships.
             </p>
             <p>
-              I&rsquo;m studying Information Technology at the University of Ghana, Legon, and spent three stints
+              I studied Information Technology at the University of Ghana, Legon, and spent three stints
               as a junior developer at Rx Health Info Systems in Accra.
             </p>
           </div>

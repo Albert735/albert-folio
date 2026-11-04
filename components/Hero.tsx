@@ -60,14 +60,17 @@ export default function Hero() {
         </motion.h1>
 
         <div className="mt-8 flex flex-col items-start gap-8 sm:mt-10">
-          <motion.p
+          <motion.figure
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.6, duration: 0.9, ease }}
-            className="max-w-xl font-display text-2xl font-medium leading-tight tracking-tight sm:text-3xl"
+            className="max-w-xl"
           >
-            {me.tagline}
-          </motion.p>
+            <blockquote className="font-display text-2xl font-medium leading-tight tracking-tight sm:text-3xl">
+              &ldquo;{me.tagline}&rdquo;
+            </blockquote>
+            <figcaption className="mt-3 text-sm text-bone/60">{me.taglineCredit}</figcaption>
+          </motion.figure>
 
           <motion.div
             initial={{ opacity: 0, y: 16 }}

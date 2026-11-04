@@ -5,13 +5,18 @@ import "@fontsource-variable/jetbrains-mono";
 import "./globals.css";
 import Providers from "@/components/Providers";
 
+const description =
+  "Albert Quaye builds web and mobile products in Accra: Raute, Crestline Kits, ShiftMed and more. Plus writing on Black history and freedom.";
+
 export const metadata: Metadata = {
-  title: "Albert Quaye — Frontend & mobile engineer",
-  description:
-    "From Legon to your lock screen. Albert Quaye builds web and mobile products in Accra: Raute, Crestline Kits, ShiftMed and more.",
+  title: {
+    default: "Albert Quaye — Frontend & mobile engineer",
+    template: "%s — Albert Quaye",
+  },
+  description,
   openGraph: {
     title: "Albert Quaye — Frontend & mobile engineer",
-    description: "From Legon to your lock screen.",
+    description,
     type: "website",
   },
   twitter: { card: "summary_large_image", creator: "@_Jaytee03" },

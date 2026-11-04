@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 /**
@@ -9,6 +10,7 @@ import { useEffect, useState } from "react";
  */
 export default function Cursor() {
   const [enabled, setEnabled] = useState(false);
+  const pathname = usePathname();
   const [label, setLabel] = useState<string | null>(null);
   const [hovering, setHovering] = useState(false);
   const [down, setDown] = useState(false);
@@ -42,6 +44,12 @@ export default function Cursor() {
       window.removeEventListener("pointerup", u);
     };
   }, [x, y]);
+
+  // the link under the cursor is gone after navigating; drop its label until the next move
+  useEffect(() => {
+    setLabel(null);
+    setHovering(false);
+  }, [pathname]);
 
   if (!enabled) return null;
 
