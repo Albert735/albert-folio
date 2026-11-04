@@ -54,7 +54,10 @@ export default function Nav() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 1.6, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       style={{ paddingTop: "env(safe-area-inset-top)" }}
-      className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-200 ${scrolled ? "border-bone/10 bg-night/90 backdrop-blur-xl" : "border-transparent"}`}
+      className={`fixed inset-x-0 top-0 z-50 border-b border-transparent transition-colors duration-200 ${
+        // phones and narrow screens: the bar stays transparent, only the floating pill has a backing
+        scrolled ? "md:border-bone/10 md:bg-night/90 md:backdrop-blur-xl" : ""
+      }`}
     >
       <nav className="mx-auto flex max-w-[1400px] items-center justify-between px-4 py-4 sm:px-8">
         <a
@@ -63,7 +66,7 @@ export default function Nav() {
             e.preventDefault();
             scrollTo("#top");
           }}
-          className="flex items-center gap-2.5 font-display text-sm font-semibold text-bone"
+          className="flex items-center gap-2.5 rounded-full border border-bone/10 bg-night/60 py-1.5 pl-1.5 pr-4 font-display text-sm font-semibold text-bone backdrop-blur-xl md:border-transparent md:bg-transparent md:p-0 md:backdrop-blur-none"
         >
           <AdinkraMark className="text-gold" size={26} />
           Albert
