@@ -130,7 +130,7 @@ export const experience = [
   {
     org: "University of Ghana, Legon",
     role: "BSc Information Technology",
-    period: "Graduated",
+    period: "2022 – 2026",
     place: "Legon",
     note:
       "Final-year project: Raute, a campus navigation app shaped by a 208-person student survey.",

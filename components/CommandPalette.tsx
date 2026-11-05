@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { me, projects, tracks } from "@/lib/data";
-import { posts } from "@/lib/blog";
 import { useUI } from "./Providers";
 
 type Item = { id: string; label: string; group: string; hint?: string; run: () => void };
@@ -35,7 +34,6 @@ export default function CommandPalette() {
     () => [
       { id: "work", group: "Go to", label: "Work", run: () => go("#work") },
       { id: "about", group: "Go to", label: "About and experience", run: () => go("#about") },
-      { id: "blog", group: "Go to", label: "Blog", hint: "Topics in Black history I care about", run: () => visit("/blog") },
       { id: "contact", group: "Go to", label: "Contact", run: () => go("#contact") },
       { id: "top", group: "Go to", label: "Back to the top", run: () => go("#top") },
       ...projects.map((p) => ({
@@ -44,13 +42,6 @@ export default function CommandPalette() {
         label: p.name,
         hint: p.summary,
         run: () => visit(`/work/${p.slug}`),
-      })),
-      ...posts.map((p) => ({
-        id: `post-${p.slug}`,
-        group: "Blog",
-        label: p.title,
-        hint: p.year,
-        run: () => visit(`/blog/${p.slug}`),
       })),
       {
         id: "copy",

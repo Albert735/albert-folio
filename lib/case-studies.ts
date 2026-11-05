@@ -1,139 +1,209 @@
 // Case studies for each project, shown at /work/<slug>.
-// Anything left out (role, decisions) is simply not shown, so fill these in as you go.
+// Written from the people's side: who it's for, what was hard for them,
+// how the design responds, the value it brings, and what has been measured.
+// Optional fields (role, evidence) are simply hidden when left out.
 
 export type CaseStudy = {
-  /** Your part in it. Leave out if not yet written. */
+  /** Your part in it */
   role?: string;
-  /** Why the project exists */
-  problem: string;
-  /** What was built, as short items */
-  built: string[];
-  /** The choices worth explaining; each title is the decision */
-  decisions: { title: string; body: string }[];
-  /** Where it stands today */
-  status: string;
+  /** Who the product is for */
+  people: string;
+  /** What was hard for them before */
+  struggle: string[];
+  /** Design choices, each tied to a human need */
+  design: { title: string; body: string }[];
+  /** What changes for people */
+  value: string[];
+  /** What has actually been measured so far, and what to measure next */
+  evidence: { measured?: string; next: string };
 };
 
 export const caseStudies: Record<string, CaseStudy> = {
   raute: {
-    role: "Design and development. My final-year project at the University of Ghana.",
-    problem:
-      "Legon's campus is big, and its halls, departments and offices are spread out and hard to find. Before writing any code I surveyed 208 students: 96% had gotten lost on campus at some point, and offline navigation was the feature they wanted most.",
-    built: [
-      "Turn-by-turn walking directions, with steps that advance on their own as you move",
-      "A campus map with 3D buildings",
-      "Explore, for browsing and searching buildings and places",
-      "Building pages with photos, open or closed status and directions",
-      "Class reminders and notifications",
-      "A floating glass tab bar and a design system with light and dark themes",
+    role: "Research, design and development. My final-year project at the University of Ghana.",
+    people:
+      "Students at the University of Ghana, Legon, especially first-years and anyone heading to a part of campus they haven't been to before.",
+    struggle: [
+      "Halls, departments and offices are spread across a large campus, and many buildings look alike or go by several names.",
+      "Signage is limited, so people rely on asking strangers, which is slow and can be awkward.",
+      "Mobile data is expensive and coverage is patchy, so a map that needs a connection fails exactly when it's needed.",
     ],
-    decisions: [
+    design: [
       {
-        title: "Mapbox instead of Google Maps",
-        body: "Offline use was what students asked for most. Mapbox supports offline maps and gives more control over campus-specific routing, so it fit better than the more familiar option.",
+        title: "Research before screens",
+        body: "I surveyed 208 students before designing anything. 96% had gotten lost on campus, and offline navigation was the most-wanted feature. That shaped every decision that followed, starting with the choice of Mapbox for offline maps.",
       },
       {
-        title: "A custom tab bar instead of the native one",
-        body: "The native tabs couldn't produce the floating, glass-style bar the design called for without layout problems, so I built my own, including swiping between tabs.",
+        title: "Directions that keep up with you",
+        body: "Turn-by-turn steps advance on their own as you walk, so you don't have to keep tapping the screen while moving. Your attention can stay on the path, not the phone.",
       },
       {
-        title: "One source of truth for places",
-        body: "Every building and point of interest lives in a single data file, so the map, search, explore and building screens always agree about a place.",
+        title: "Landmarks people recognise",
+        body: "3D buildings and building photos let students match what they see on screen to what's in front of them, which is how people actually orient themselves.",
       },
       {
-        title: "Design system before screens",
-        body: "Colours, type, spacing and components were set up in Figma as tokens with light and dark modes first, so new screens came together faster and stayed consistent.",
+        title: "Names the way students say them",
+        body: "Search and Explore cover buildings, departments and places, with open or closed status, so a student can find a place by the name they've heard rather than its official one.",
+      },
+      {
+        title: "Easy to reach, easy to read",
+        body: "A floating tab bar within thumb reach, large tap targets, and light and dark themes from one design system keep the app usable one-handed and in bright sun or at night.",
       },
     ],
-    status:
-      "Routing, navigation, explore, reminders and notifications work. Next: remembering data between sessions, separate experiences for guests and students, push notifications, Android testing, and testing with students on campus.",
+    value: [
+      "Less time lost and less stress finding a lecture hall, office or exam venue.",
+      "Independence: no need to ask around or rely on a friend who knows the way.",
+      "Works on a tight data budget, so it helps the students who can least afford to be lost.",
+      "Class reminders help students get to the right place at the right time, not just find it.",
+    ],
+    evidence: {
+      measured: "A survey of 208 students: 96% had gotten lost on campus, and offline navigation was the top-rated feature.",
+      next: "Usability testing with students on campus: time to find an unfamiliar building with and without Raute, wrong turns along the way, and a short satisfaction questionnaire such as the System Usability Scale.",
+    },
   },
 
   crestline: {
-    role: "Full-stack development.",
-    problem:
-      "Crestline Kits sells fan jerseys, mostly to buyers in Ghana who pay with mobile money, and some from abroad. The store had to take real payments and handle a stock model where some kits are on hand and others are ordered from a supplier only after a customer buys.",
-    built: [
-      "A catalogue of club, national team and retro kits",
-      "Checkout with mobile money and cards through Paystack",
-      "Prices in cedis for Ghana and Nigeria, and in US dollars elsewhere",
-      "Free delivery within Greater Accra above a set order value",
+    role: "Built the store for its owner, from design to payments.",
+    people:
+      "Football fans in Ghana buying jerseys online, a smaller group of buyers abroad, and the store owner who runs it.",
+    struggle: [
+      "Many people in Ghana don't use cards; mobile money is how they pay. A checkout that only takes cards turns them away at the last step.",
+      "Buyers abroad shouldn't have to work out cedi conversions or guess what they'll be charged.",
+      "Buying clothing online takes trust: people need to know exactly what they're getting before they pay.",
     ],
-    decisions: [
+    design: [
       {
-        title: "Mobile money first",
-        body: "Most customers pay with MoMo, so that shipped first. Card payments followed through Paystack, which handles both in one checkout.",
+        title: "Pay the way you already pay",
+        body: "Mobile money came first, then cards, in one Paystack checkout. Matching the payment method people use every day removes the biggest reason to abandon an order.",
       },
       {
-        title: "Prices that follow the buyer",
-        body: "Buyers outside Ghana and Nigeria see a separate US dollar price, set per jersey. The site picks the right one from the visitor's location automatically, with no currency switch to get wrong.",
+        title: "One price, in your currency",
+        body: "Buyers in Ghana and Nigeria see cedis; everyone else sees a US dollar price set per jersey, picked automatically from their location. No currency switch to get wrong, no mental arithmetic.",
       },
       {
-        title: "Two kinds of stock",
-        body: "The store has to support kits that are on hand and ship right away, and kits ordered from a supplier only after a customer pays.",
+        title: "Honest about what you're buying",
+        body: "The jerseys are fan versions, not official merchandise, and the site says so plainly. Clear expectations build the trust that brings people back.",
       },
       {
-        title: "Upfront about replicas",
-        body: "The jerseys are fan versions, not official merchandise, and the site says so clearly.",
+        title: "No surprises at checkout",
+        body: "Free delivery within Greater Accra above a set order value is stated up front, so the total doesn't change unexpectedly at the end.",
       },
     ],
-    status: "Live, taking real payments through Paystack, and promoted on TikTok.",
+    value: [
+      "Fans can buy with the money they actually use, in a few taps.",
+      "Buyers abroad see a fair price in a currency they understand.",
+      "The owner gets a real store that takes payment directly, open around the clock.",
+    ],
+    evidence: {
+      measured: "Live and taking real payments through Paystack, both mobile money and cards.",
+      next: "Checkout completion rate by payment method, where in the flow people drop off, and how many buyers come back for a second order.",
+    },
   },
 
   shiftmed: {
-    problem:
-      "Hospitals often need cover for shifts at short notice, and filling them can take days of calls and paperwork. ShiftMed puts hospitals and healthcare professionals on one platform.",
-    built: [
-      "A searchable list of open roles",
-      "Separate sign-up for hospitals and for healthcare professionals",
-      "Hospitals posting open shifts, and professionals browsing and applying",
-      "Answers to common questions about documents, approvals and selection",
+    people:
+      "Hospitals that need to cover shifts, and doctors, nurses and other healthcare professionals looking for work.",
+    struggle: [
+      "When a shift opens at short notice, filling it often means rounds of phone calls and paperwork.",
+      "Professionals looking for shifts have no single place to see what's open, and are unsure what documents or approvals they'll need.",
     ],
-    decisions: [],
-    status: "Live.",
+    design: [
+      {
+        title: "Two audiences, two clear paths",
+        body: "Hospitals and professionals need different things, so each has its own sign-up and its own route through the site, without either wading through the other's options.",
+      },
+      {
+        title: "Search first",
+        body: "A role search sits at the centre of the home page, because finding the right shift is what professionals came to do.",
+      },
+      {
+        title: "Answers before questions",
+        body: "Common worries about documents, approvals and how people are selected are answered up front, which lowers the uncertainty that stops people applying.",
+      },
+    ],
+    value: [
+      "Hospitals can reach qualified people faster than working through a phone list.",
+      "Professionals see open shifts in one place and know what's expected before they apply.",
+    ],
+    evidence: {
+      next: "Time from a shift being posted to being filled, and how many professionals who start an application finish it.",
+    },
   },
 
   geng: {
-    problem: "Geng Bistros is a burger kitchen in Accra. This is its ordering site.",
-    built: ["Browsing the menu", "Building an order and checking out"],
-    decisions: [],
-    status: "In development.",
+    people: "Hungry customers in Accra, and the Geng Bistros kitchen taking their orders.",
+    struggle: [
+      "Ordering by phone means busy lines, misheard orders and no clear view of the menu or prices.",
+    ],
+    design: [
+      {
+        title: "Built for phones on mobile data",
+        body: "Most orders come from a phone, often on a mobile connection, so the site is designed for small screens and to load quickly.",
+      },
+      {
+        title: "See it, build it, check out",
+        body: "The menu, the order and checkout follow one simple path, so customers always know what's in their order and what it costs.",
+      },
+    ],
+    value: [
+      "Customers order at their own pace and get exactly what they chose.",
+      "The kitchen receives clear, written orders instead of rushed phone calls.",
+    ],
+    evidence: {
+      next: "Time to place an order, mistakes in orders, and how many orders come through the site versus the phone.",
+    },
   },
 
   moodquest: {
     role: "Design and development.",
-    problem:
-      "Music apps are organised by genre and artist, but people often know how they feel before they know what they want to hear. MoodQuest starts from the mood.",
-    built: [
-      "Pick a mood and get matching tracks and artists",
-      "Search across Spotify's catalogue",
-      "Spotify sign-in handled on the server",
+    people: "Anyone who knows how they feel but not what they want to listen to.",
+    struggle: [
+      "Music apps are organised by genre, artist and playlist, which assumes you already know what you want.",
+      "Endless choice makes picking something harder, not easier.",
     ],
-    decisions: [
+    design: [
       {
-        title: "Keeping Spotify's secret on the server",
-        body: "MoodQuest uses Spotify's client credentials, so the token request runs on the server in Next.js and the secret never reaches the browser.",
+        title: "Start from the feeling",
+        body: "Choosing a mood matches how people actually think about music in the moment. One tap replaces a search.",
       },
       {
-        title: "Adapting when Spotify changed its API",
-        body: "Spotify deprecated the browse endpoints the first version relied on, so the app had to find another way to fetch tracks for each mood.",
+        title: "Fewer, better choices",
+        body: "A short set of mood options and a focused list of matching tracks reduce the effort of deciding.",
+      },
+      {
+        title: "No sign-in to get started",
+        body: "Spotify access is handled on the server, so people can explore straight away without creating an account or handing over their login.",
       },
     ],
-    status: "Built with Next.js 15 and the Spotify Web API.",
+    value: ["Less time scrolling, more time listening.", "A way to find music that fits the moment, not just the habit."],
+    evidence: {
+      next: "Time from opening the app to playing a track, and how often people keep a suggested song.",
+    },
   },
 
   beats: {
     role: "Design and development. One of my first projects.",
-    problem:
-      "A full product page and storefront concept for the Beats Studio Pro, priced in cedis.",
-    built: [
-      "A product hero with price and an add-to-bag button",
-      "A spec breakdown: connectivity, battery life, charging and microphone",
-      "A colour picker with a price for each colourway",
-      "Light and dark modes",
-      "Delivery, pickup and returns information",
+    people: "Shoppers comparing headphones before they buy.",
+    struggle: [
+      "Product pages often bury the details people need, like battery life, charging and the price of each colour, under marketing.",
     ],
-    decisions: [],
-    status: "Live.",
+    design: [
+      {
+        title: "Specs you can scan",
+        body: "Connectivity, battery, charging and microphone are laid out side by side, so the comparison takes seconds.",
+      },
+      {
+        title: "Price with every option",
+        body: "Each colourway shows its own price, so there's no surprise when you choose a different colour.",
+      },
+      {
+        title: "Comfortable in any light",
+        body: "Light and dark modes, plus delivery, pickup and returns information on the page, answer the last questions before buying.",
+      },
+    ],
+    value: ["A clear, honest product page that helps people decide.", "Where I first practised designing for how people shop."],
+    evidence: {
+      next: "As a concept, the next step would be watching a few people use it to choose a colour and complete a purchase.",
+    },
   },
 };

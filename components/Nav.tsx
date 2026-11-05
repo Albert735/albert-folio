@@ -35,7 +35,6 @@ export default function Nav() {
   const { setPaletteOpen, scrollTo } = useUI();
   const pathname = usePathname();
   const onHome = pathname === "/";
-  const onBlog = pathname.startsWith("/blog");
   const [mac, setMac] = useState(true);
   const [touch, setTouch] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -94,13 +93,6 @@ export default function Nav() {
         <div className="flex items-center gap-1 rounded-full border border-bone/10 bg-night/60 p-1 text-sm backdrop-blur-xl">
           {sectionLink("Work", "#work")}
           {sectionLink("About", "#about")}
-          <Link
-            href="/blog"
-            aria-current={onBlog ? "page" : undefined}
-            className={`${linkClass} ${onBlog ? "!text-gold" : ""}`}
-          >
-            Blog
-          </Link>
           {sectionLink("Contact", "#contact")}
           {/* Résumé opens in a new tab; shown on every screen size */}
           <a

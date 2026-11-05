@@ -33,6 +33,19 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
+function Bullets({ items }: { items: string[] }) {
+  return (
+    <ul className="space-y-3">
+      {items.map((b) => (
+        <li key={b} className="flex gap-3">
+          <span aria-hidden className="mt-[0.7em] h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+          <span>{b}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export default async function CaseStudyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const i = projects.findIndex((p) => p.slug === slug);
@@ -114,36 +127,42 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
         )}
 
         <div className="mt-16">
-          <Section title="The problem">
-            <p>{study.problem}</p>
+          <Section title="Who it's for">
+            <p>{study.people}</p>
           </Section>
 
-          <Section title="What was built">
-            <ul className="space-y-3">
-              {study.built.map((b) => (
-                <li key={b} className="flex gap-3">
-                  <span aria-hidden className="mt-[0.7em] h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
-                  <span>{b}</span>
-                </li>
+          <Section title="What was hard for them">
+            <Bullets items={study.struggle} />
+          </Section>
+
+          <Section title="Designing for them">
+            <div className="space-y-8">
+              {study.design.map((d) => (
+                <div key={d.title}>
+                  <h3 className="font-display text-xl font-semibold leading-tight text-bone">{d.title}</h3>
+                  <p className="mt-2">{d.body}</p>
+                </div>
               ))}
-            </ul>
+            </div>
           </Section>
 
-          {study.decisions.length > 0 && (
-            <Section title="Key decisions">
-              <div className="space-y-8">
-                {study.decisions.map((d) => (
-                  <div key={d.title}>
-                    <h3 className="font-display text-xl font-semibold leading-tight text-bone">{d.title}</h3>
-                    <p className="mt-2">{d.body}</p>
-                  </div>
-                ))}
-              </div>
-            </Section>
-          )}
+          <Section title="The value it brings">
+            <Bullets items={study.value} />
+          </Section>
 
-          <Section title="Where it stands">
-            <p>{study.status}</p>
+          <Section title="Measuring impact">
+            <div className="space-y-6">
+              {study.evidence.measured && (
+                <div>
+                  <h3 className="text-sm text-mist">So far</h3>
+                  <p className="mt-2 text-bone">{study.evidence.measured}</p>
+                </div>
+              )}
+              <div>
+                <h3 className="text-sm text-mist">{study.evidence.measured ? "Next" : "What to measure"}</h3>
+                <p className="mt-2">{study.evidence.next}</p>
+              </div>
+            </div>
           </Section>
         </div>
 
