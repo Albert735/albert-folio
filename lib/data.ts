@@ -80,18 +80,6 @@ export const projects: Project[] = [
     theme: { bg: "#F5F8FF", fg: "#0D1B3E", accent: "#2563EB", soft: "#DCE6FF" },
   },
   {
-    slug: "geng",
-    name: "Geng Bistros",
-    summary: "Order burgers from an Accra kitchen without the phone tag.",
-    detail:
-      "An ordering experience for a burger kitchen in Accra: browse the menu, build your order and check out, designed to be fast on a mobile connection.",
-    stack: ["React", "TypeScript", "Tailwind"],
-    status: "In development",
-    device: "phone",
-    repo: "https://github.com/Mersharch/Geng-Bistros",
-    theme: { bg: "#1B0F0A", fg: "#FFF3E2", accent: "#FF6A1A", soft: "#3A1E12" },
-  },
-  {
     slug: "eduwell",
     name: "EduWell Guide",
     summary: "Help for students, without having to know where to look.",
@@ -101,7 +89,7 @@ export const projects: Project[] = [
     status: "Live",
     device: "browser",
     live: "https://eduwell-guide.vercel.app",
-    theme: { bg: "#FFFFFF", fg: "#09090B", accent: "#3674B5", soft: "#B2A5FF" },
+    theme: { bg: "#000000", fg: "#FAFAFA", accent: "#3674B5", soft: "#B2A5FF" },
   },
   {
     slug: "beats",

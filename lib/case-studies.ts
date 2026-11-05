@@ -130,30 +130,6 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
   },
 
-  geng: {
-    people: "Hungry customers in Accra, and the Geng Bistros kitchen taking their orders.",
-    struggle: [
-      "Ordering by phone means busy lines, misheard orders and no clear view of the menu or prices.",
-    ],
-    design: [
-      {
-        title: "Built for phones on mobile data",
-        body: "Most orders come from a phone, often on a mobile connection, so the site is designed for small screens and to load quickly.",
-      },
-      {
-        title: "See it, build it, check out",
-        body: "The menu, the order and checkout follow one simple path, so customers always know what's in their order and what it costs.",
-      },
-    ],
-    value: [
-      "Customers order at their own pace and get exactly what they chose.",
-      "The kitchen receives clear, written orders instead of rushed phone calls.",
-    ],
-    evidence: {
-      next: "Time to place an order, mistakes in orders, and how many orders come through the site versus the phone.",
-    },
-  },
-
   eduwell: {
     people:
       "University students who need support with their studies, their mental health or their next career step, and the counsellors who help them.",

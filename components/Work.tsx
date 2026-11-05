@@ -111,7 +111,7 @@ export default function Work() {
           Things I&rsquo;ve built
         </h2>
         <p className="max-w-sm text-lg text-bone/60">
-          Six products for real people. Campus, commerce, health, food, music, sound.
+          Five products for real people: campus life, commerce, healthcare, student wellbeing and sound.
         </p>
       </div>
       {projects.map((p, i) => (
