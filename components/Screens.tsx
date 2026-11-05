@@ -111,58 +111,53 @@ export function ShiftMedScreen({ t }: { t: T }) {
   );
 }
 
-export function MoodQuestScreen({ t }: { t: T }) {
-  const moods = ["Hyped", "Mellow", "In my feelings", "Focus", "Afrobeats"];
+export function EduWellScreen({ t }: { t: T }) {
+  const people = [
+    { role: "Career counsellor", tone: "#C7DAF0" },
+    { role: "Mental health", tone: "#E4DEFF" },
+    { role: "Academic advisor", tone: "#DCEBDF" },
+    { role: "Study skills", tone: "#F6E7C8" },
+  ];
   return (
-    <div
-      className="h-full w-full overflow-hidden p-4 sm:p-6"
-      style={{ background: t.bg, color: t.fg }}
-    >
-      <div className="mb-4 text-sm font-bold sm:text-lg">
-        How are you feeling?
+    <div className="h-full w-full overflow-hidden px-4 pt-3 sm:px-6 sm:pt-4" style={{ background: t.bg, color: t.fg, fontFamily: "Montserrat, system-ui, sans-serif" }}>
+      <div className="flex items-center justify-between text-[8px] sm:text-[10px]">
+        <span className="font-bold sm:text-xs">EduWell Guide</span>
+        <span className="hidden gap-4 opacity-70 sm:flex">
+          <span>Find counsellors</span>
+          <span>Resources</span>
+          <span>About us</span>
+        </span>
+        <span className="rounded-md px-2 py-1 font-semibold" style={{ background: "#C7DAF0" }}>
+          Join
+        </span>
       </div>
-      <div className="mb-4 flex flex-wrap gap-1.5 text-[9px] sm:text-[11px]">
-        {moods.map((m, i) => (
-          <span
-            key={m}
-            className="rounded-full px-3 py-1"
-            style={{
-              background: i === 0 ? t.accent : t.soft,
-              color: i === 0 ? t.bg : t.fg,
-            }}
-          >
-            {m}
+      <div className="mx-auto mt-4 max-w-[85%] text-center sm:mt-6">
+        <div className="text-[13px] font-bold leading-tight sm:text-xl">
+          Empowering students with
+          <br />
+          <span style={{ backgroundImage: `linear-gradient(90deg, ${t.accent}, ${t.soft})`, WebkitBackgroundClip: "text", color: "transparent" }}>
+            expert guidance
           </span>
+        </div>
+        <div className="mx-auto mt-2 max-w-[90%] text-[7px] leading-snug opacity-60 sm:text-[9px]">
+          Academic, mental health and career support from qualified counsellors, all in one place.
+        </div>
+        <div className="mt-2.5 flex justify-center gap-1.5 text-[7px] font-semibold sm:text-[9px]">
+          <span className="rounded-md px-2.5 py-1" style={{ background: "#C7DAF0" }}>Get started</span>
+          <span className="rounded-md border px-2.5 py-1" style={{ borderColor: "#E4E4E7" }}>Learn more</span>
+        </div>
+      </div>
+      <div className="mt-4 grid grid-cols-4 gap-1.5 sm:mt-5 sm:gap-2.5">
+        {people.map((p) => (
+          <div key={p.role} className="overflow-hidden rounded-lg" style={{ background: p.tone }}>
+            <div className="relative aspect-[4/5]">
+              <div className="absolute left-1/2 top-[22%] h-[26%] w-[34%] -translate-x-1/2 rounded-full" style={{ background: t.fg, opacity: 0.18 }} />
+              <div className="absolute bottom-0 left-1/2 h-[38%] w-[70%] -translate-x-1/2 rounded-t-[40%]" style={{ background: t.fg, opacity: 0.12 }} />
+            </div>
+            <div className="bg-white/70 px-1 py-1 text-[6px] font-semibold sm:text-[8px]">{p.role}</div>
+          </div>
         ))}
       </div>
-      {[0, 1, 2, 3].map((i) => (
-        <div
-          key={i}
-          className="mb-1.5 flex items-center gap-2 rounded-lg p-1.5"
-          style={{ background: t.soft }}
-        >
-          <div
-            className="h-6 w-6 rounded"
-            style={{
-              background: ["#FF5E3A", "#A259FF", "#FFD23F", "#00B4D8"][i],
-            }}
-          />
-          <div className="flex-1">
-            <div
-              className="h-1.5 w-1/2 rounded"
-              style={{ background: t.fg, opacity: 0.8 }}
-            />
-            <div
-              className="mt-1 h-1 w-1/3 rounded"
-              style={{ background: t.fg, opacity: 0.35 }}
-            />
-          </div>
-          <div
-            className="h-4 w-4 rounded-full"
-            style={{ background: t.accent }}
-          />
-        </div>
-      ))}
     </div>
   );
 }
@@ -180,8 +175,8 @@ export function ScreenFor({ project }: { project: Project }) {
       return <CrestlineScreen t={t} />;
     case "shiftmed":
       return <ShiftMedScreen t={t} />;
-    case "moodquest":
-      return <MoodQuestScreen t={t} />;
+    case "eduwell":
+      return <EduWellScreen t={t} />;
     default:
       return null;
   }

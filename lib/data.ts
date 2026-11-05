@@ -92,16 +92,16 @@ export const projects: Project[] = [
     theme: { bg: "#1B0F0A", fg: "#FFF3E2", accent: "#FF6A1A", soft: "#3A1E12" },
   },
   {
-    slug: "moodquest",
-    name: "MoodQuest",
-    summary: "Tell it how you feel. It finds the music.",
+    slug: "eduwell",
+    name: "EduWell Guide",
+    summary: "Help for students, without having to know where to look.",
     detail:
-      "Mood-based music discovery on top of the Spotify API. Pick a feeling and get tracks and artists that match it, with server-side auth and dynamic routes in Next.js 15.",
-    stack: ["Next.js 15", "Spotify API", "Tailwind"],
+      "A platform that connects university students with counsellors for academic, mental health and career support, alongside peer forums and free guides for when they're not ready to talk yet.",
+    stack: ["Next.js", "React", "Tailwind CSS"],
     status: "Live",
     device: "browser",
-    repo: "https://github.com/Albert735/mood-quest",
-    theme: { bg: "#0B0A12", fg: "#F1EEFF", accent: "#1ED760", soft: "#1C1A2B" },
+    live: "https://eduwell-guide.vercel.app",
+    theme: { bg: "#FFFFFF", fg: "#09090B", accent: "#3674B5", soft: "#B2A5FF" },
   },
   {
     slug: "beats",

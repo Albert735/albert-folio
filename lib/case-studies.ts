@@ -154,30 +154,39 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
   },
 
-  moodquest: {
-    role: "Design and development.",
-    people: "Anyone who knows how they feel but not what they want to listen to.",
+  eduwell: {
+    people:
+      "University students who need support with their studies, their mental health or their next career step, and the counsellors who help them.",
     struggle: [
-      "Music apps are organised by genre, artist and playlist, which assumes you already know what you want.",
-      "Endless choice makes picking something harder, not easier.",
+      "Support often exists on campus, but students don't know where to find it or who the right person is.",
+      "Asking for help, especially with mental health, can feel exposing, so many students put it off until things are serious.",
+      "Booking a session through an office means queues, emails and waiting, which is a lot when you're already struggling.",
     ],
     design: [
       {
-        title: "Start from the feeling",
-        body: "Choosing a mood matches how people actually think about music in the moment. One tap replaces a search.",
+        title: "One front door for every kind of help",
+        body: "Academic, mental health, career and financial support live in one place, so a student doesn't have to work out which office to approach before getting help.",
       },
       {
-        title: "Fewer, better choices",
-        body: "A short set of mood options and a focused list of matching tracks reduce the effort of deciding.",
+        title: "Choose who you talk to",
+        body: "Students browse counsellors by what they specialise in and when they're available, then book directly. Picking someone yourself builds the trust that makes a first session easier.",
       },
       {
-        title: "No sign-in to get started",
-        body: "Spotify access is handled on the server, so people can explore straight away without creating an account or handing over their login.",
+        title: "Ways in that don't need a conversation",
+        body: "Free guides on studying, wellbeing, careers and money, plus peer forums, give students a low-pressure first step before they're ready to talk to anyone.",
+      },
+      {
+        title: "Calm, readable and comfortable",
+        body: "A quiet layout, plain language and a dark mode keep the experience gentle for people who may already be stressed, including late at night.",
       },
     ],
-    value: ["Less time scrolling, more time listening.", "A way to find music that fits the moment, not just the habit."],
+    value: [
+      "Students reach the right kind of help sooner, instead of waiting until a crisis.",
+      "Less stigma: help can start privately with a guide or a forum post.",
+      "Counsellors receive students who chose them for their specialty, which makes sessions a better fit.",
+    ],
     evidence: {
-      next: "Time from opening the app to playing a track, and how often people keep a suggested song.",
+      next: "Time from a student's first visit to their first booked session, how many students who start booking finish, and how comfortable students feel asking for help, measured with a short survey before and after using it.",
     },
   },
 
