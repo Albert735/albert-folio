@@ -14,7 +14,7 @@ export const me = {
   email: "03jayteee@gmail.com",
   phone: "+233 55 125 8689",
   phoneHref: "tel:+233551258689",
-  resume: "https://drive.google.com/file/d/1HaK2TpScKmOEJ7hbfs6oAoF3ZX721zEN/view?usp=drive_link",
+  resume: "https://drive.google.com/file/d/1gqzFBjTrDir92kQI_FWnAsSTFxpoW9Zz/view?usp=drive_link",
   socials: [
     { label: "GitHub", href: "https://github.com/Albert735" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/albert-quaye-3a39682b0/" },
